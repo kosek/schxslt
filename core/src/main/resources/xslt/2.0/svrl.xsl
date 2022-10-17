@@ -130,14 +130,7 @@
                   <value-of separator="/" select="(system-property('Q{{http://www.w3.org/1999/XSL/Transform}}product-name'), system-property('Q{{http://www.w3.org/1999/XSL/Transform}}product-version'))"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <variable name="prefix" as="xs:string?" select="if (doc-available('')) then in-scope-prefixes(document('')/*[1])[namespace-uri-for-prefix(., document('')/*[1]) eq 'http://www.w3.org/1999/XSL/Transform'][1] else ()">
-                  </variable>
-                  <choose>
-                    <when test="empty($prefix)">Unknown</when>
-                    <otherwise>
-                      <value-of separator="/" select="(system-property(concat($prefix, ':product-name')), system-property(concat($prefix,':product-version')))"/>
-                    </otherwise>
-                  </choose>
+                  <value-of separator="/" select="(system-property('xsl:product-name'), system-property('xsl:product-version'))"/>
                 </xsl:otherwise>
               </xsl:choose>
             </skos:prefLabel>
