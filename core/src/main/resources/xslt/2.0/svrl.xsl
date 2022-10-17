@@ -89,31 +89,15 @@
   <xsl:template name="schxslt-api:failed-assert">
     <xsl:param name="assert" as="element(sch:assert)" required="yes"/>
     <xsl:param name="location-function" as="xs:string" required="yes" tunnel="yes"/>
-    <svrl:failed-assert location="{{{$location-function}({($assert/@subject, $assert/../@subject, '.')[1]})}}">
-      <xsl:sequence select="($assert/@role, $assert/@flag, $assert/@id, $assert/@see, $assert/@icon, $assert/@fpi, $assert/@xml:*)"/>
-      <xsl:sequence select="$assert/@xml:id | $assert/ancestor-or-self::*[@xml:lang]/@xml:lang"/>
-      <attribute name="test">
-        <xsl:value-of select="$assert/@test"/>
-      </attribute>
-      <xsl:call-template name="schxslt:handle-detailed-report">
-        <xsl:with-param name="pattern" as="element(sch:pattern)" tunnel="yes" select="$assert/../.."/>
-      </xsl:call-template>
-    </svrl:failed-assert>
+    
+    <sequence select="schxslt:generate-failed-assert({$location-function}({($assert/@subject, $assert/../@subject, '.')[1]}), '{replace($assert/@test, &quot;'&quot;, '&amp;apos;')}', '{replace(normalize-space(.), &quot;'&quot;, '&amp;apos;')}')"/>
   </xsl:template>
 
   <xsl:template name="schxslt-api:successful-report">
     <xsl:param name="report" as="element(sch:report)" required="yes"/>
     <xsl:param name="location-function" as="xs:string" required="yes" tunnel="yes"/>
-    <svrl:successful-report location="{{{$location-function}({($report/@subject, $report/../@subject, '.')[1]})}}">
-      <xsl:sequence select="($report/@role, $report/@flag, $report/@id, $report/@see, $report/@icon, $report/@fpi)"/>
-      <xsl:sequence select="$report/@xml:id | $report/ancestor-or-self::*[@xml:lang]/@xml:lang"/>
-      <attribute name="test">
-        <xsl:value-of select="$report/@test"/>
-      </attribute>
-      <xsl:call-template name="schxslt:handle-detailed-report">
-        <xsl:with-param name="pattern" as="element(sch:pattern)" tunnel="yes" select="$report/../.."/>
-      </xsl:call-template>
-    </svrl:successful-report>
+
+    <sequence select="schxslt:generate-successful-report({$location-function}({($report/@subject, $report/../@subject, '.')[1]}), '{replace($report/@test, &quot;'&quot;, '&amp;apos;')}', '{replace(normalize-space(.), &quot;'&quot;, '&amp;apos;')}')"/>
   </xsl:template>
 
   <xsl:template name="schxslt-api:metadata">

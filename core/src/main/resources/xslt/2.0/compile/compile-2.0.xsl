@@ -6,6 +6,7 @@
                xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                xmlns:schxslt-api="https://doi.org/10.5281/zenodo.1495494#api"
                xmlns:schxslt="https://doi.org/10.5281/zenodo.1495494"
+               xmlns:svrl="http://purl.oclc.org/dsdl/svrl"               
                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
@@ -209,6 +210,27 @@
 
           <value-of select="concat('/', string-join($segments, '/'))"/>
         </function>
+        
+        <function name="schxslt:generate-failed-assert">
+          <param name="location"/>
+          <param name="assert-test"/>
+          <param name="assert-text"/>
+          
+          <svrl:failed-assert location="{{$location}}" test="{{$assert-test}}">
+            <svrl:text><value-of select="normalize-space($assert-text)"/></svrl:text>
+          </svrl:failed-assert>
+        </function>
+
+        <function name="schxslt:generate-successful-report">
+          <param name="location"/>
+          <param name="assert-test"/>
+          <param name="assert-text"/>
+          
+          <svrl:successful-report location="{{$location}}" test="{{$assert-test}}">
+            <svrl:text><value-of select="normalize-space($assert-text)"/></svrl:text>
+          </svrl:successful-report>
+        </function>
+        
       </xsl:if>
 
       <xsl:call-template name="schxslt-api:validation-stylesheet-body-bottom-hook">
